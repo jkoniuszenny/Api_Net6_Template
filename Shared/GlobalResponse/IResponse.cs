@@ -10,7 +10,7 @@ public interface IResponse<T>
     where T : class
 {
     bool Succeded { get; set; }
-    Payload<T> Payload { get; set; }
+    Payload<T>? Payload { get; set; }
     Error? Error { get; set; }
 }
 
