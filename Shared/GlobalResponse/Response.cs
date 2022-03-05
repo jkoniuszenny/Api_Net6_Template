@@ -1,4 +1,4 @@
-﻿using System.Web.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace Shared.GlobalResponse;
 
@@ -17,7 +17,7 @@ public class Response<T> : IResponse<T>
             Succeded = false
         };
 
-        return new JsonResult() { Data = result };
+        return new JsonResult(result) ;
     }
 
     public static JsonResult Fail(string message)
@@ -28,7 +28,7 @@ public class Response<T> : IResponse<T>
             Error = new Error() { Message = message }
         };
 
-        return new JsonResult() { Data = result };
+        return new JsonResult(result);
     }
 
     public static JsonResult Fail(int code, string message)
@@ -43,7 +43,7 @@ public class Response<T> : IResponse<T>
             }
         };
 
-        return new JsonResult() { Data = result };
+        return new JsonResult(result);
     }
 
     public static async Task<JsonResult> FailAsync() => await Task.FromResult(Fail());
@@ -61,7 +61,7 @@ public class Response<T> : IResponse<T>
             Succeded = true
         };
 
-        return new JsonResult() { Data = result };
+        return new JsonResult(result);
     }
 
     public static JsonResult Success(T data)
@@ -72,7 +72,7 @@ public class Response<T> : IResponse<T>
             Payload = new Payload<T>() { Data = data }
         };
 
-        return new JsonResult() { Data = result };
+        return new JsonResult(result);
     }
 
     public static async Task<JsonResult> SuccessAsync()=> await Task.FromResult(Success());

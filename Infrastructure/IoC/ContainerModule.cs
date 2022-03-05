@@ -16,7 +16,6 @@ namespace Infrastructure.IoC
 
         protected override void Load(ContainerBuilder builder)
         {
-            //builder.RegisterInstance(AutoMapperConfig.Initialize()).SingleInstance();
             builder.RegisterModule<MediatrModule>();
             builder.RegisterModule<RepositoryModule>();
             builder.RegisterModule<ServiceModule>();

@@ -11,7 +11,7 @@ public static class MainExtensions
     public static WebApplication UseMinimalEndpoints(this WebApplication app, string projectName)
     {
         var endpoints = AppDomain.CurrentDomain.GetAssemblies()
-            .Where(w=>w.FullName.Contains(projectName))
+            .Where(w => w.FullName.Contains(projectName))
             .SelectMany(s => s.GetTypes())
             .Where(p => typeof(IFastEndpoint).IsAssignableFrom(p) && !p.Name.Contains("FastEndpoint"));
 
@@ -36,28 +36,28 @@ public static class MainExtensions
             switch (endpointClassInit?.Method)
             {
                 case HttpRequestMethodTypes.Get:
-                    app.MapGet(endpointClassInit.Url, dynamicDelegateForRequestExecuteMethod)
+                    app.MapGet(endpointClassInit.Url ?? string.Empty, dynamicDelegateForRequestExecuteMethod)
                        .Produces<IDictionary<string, string>>(StatusCodes.Status200OK)
-                       .WithName(endpointClassInit.Name)
-                       .WithTags(endpointClassInit.Tag);
+                       .WithName(endpointClassInit.Name ?? string.Empty)
+                       .WithTags(endpointClassInit.Tag ?? string.Empty);
                     break;
                 case HttpRequestMethodTypes.Post:
-                    app.MapPost(endpointClassInit.Url, dynamicDelegateForRequestExecuteMethod)
+                    app.MapPost(endpointClassInit.Url ?? string.Empty, dynamicDelegateForRequestExecuteMethod)
                        .Produces(StatusCodes.Status200OK)
                        .WithName(endpointClassInit.Name ?? String.Empty)
                        .WithTags(endpointClassInit.Tag ?? String.Empty);
                     break;
                 case HttpRequestMethodTypes.Put:
-                    app.MapPut(endpointClassInit.Url, dynamicDelegateForRequestExecuteMethod)
+                    app.MapPut(endpointClassInit.Url ?? string.Empty, dynamicDelegateForRequestExecuteMethod)
                        .Produces(StatusCodes.Status200OK)
-                       .WithName(endpointClassInit.Name)
-                       .WithTags(endpointClassInit.Tag);
+                       .WithName(endpointClassInit.Name ?? string.Empty)
+                       .WithTags(endpointClassInit.Tag ?? string.Empty);
                     break;
                 case HttpRequestMethodTypes.Delete:
-                    app.MapDelete(endpointClassInit.Url, dynamicDelegateForRequestExecuteMethod)
+                    app.MapDelete(endpointClassInit.Url ?? string.Empty, dynamicDelegateForRequestExecuteMethod)
                        .Produces(StatusCodes.Status200OK)
-                       .WithName(endpointClassInit.Name)
-                       .WithTags(endpointClassInit.Tag);
+                       .WithName(endpointClassInit.Name ?? string.Empty)
+                       .WithTags(endpointClassInit.Tag ?? string.Empty);
                     break;
                 default:
                     break;
