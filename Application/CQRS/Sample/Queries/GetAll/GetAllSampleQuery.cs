@@ -25,7 +25,6 @@ public class GetAllSampleQueryHandler : IRequestHandler<GetAllSampleQuery, strin
 
     public async Task<string> Handle(GetAllSampleQuery request, CancellationToken cancellationToken)
     {
-
         return $"{await _testService.GetStringAsync()} - passed id: {request.Id}";
     }
 }

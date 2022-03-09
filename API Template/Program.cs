@@ -2,7 +2,7 @@ using Api.Middlewares;
 using Application.Settings;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using Endpoints.Extensions;
+using FastEndpoints.Extensions;
 using Infrastructure.IoC;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -11,6 +11,7 @@ using Microsoft.OpenApi.Models;
 using NLog;
 using NLog.Config;
 using NLog.Web;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 
@@ -106,7 +107,7 @@ app.ConfigureBuffer();
 app.UseAuthorization();
 app.UseAuthentication();
 
-app.UseMinimalEndpoints("Endpoints");
+app.UseMinimalEndpoints("EndpointsController");
 
 var configuringFileName = $"nlog{(!environment.IsProduction() ? $".{environment.EnvironmentName.ToLower()}" : string.Empty)}.config";
 var logger = NLogBuilder.ConfigureNLog(configuringFileName).Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
@@ -126,3 +127,4 @@ finally
 {
     LogManager.Shutdown();
 }
+
