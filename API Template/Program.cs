@@ -1,5 +1,5 @@
 using Api.Middlewares;
-using Application.Settings;
+using Shared.Settings;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using FastEndpoints.Extensions;
@@ -14,6 +14,7 @@ using NLog.Web;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
+using Infrastructure.Database;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -58,6 +59,7 @@ builder.Services.AddAuthentication(x =>
     };
 });
 
+builder.Services.AddDbContext<DatabaseContext>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>

@@ -1,11 +1,12 @@
-﻿using Application.Settings;
+﻿
 using Autofac;
 using Infrastructure.Extensions;
 using Microsoft.Extensions.Configuration;
+using Shared.Settings;
 using System.Reflection;
 
-namespace Infrastructure.IoC.Modules
-{
+namespace Infrastructure.IoC.Modules;
+
     public class SettingsModule : Autofac.Module
     {
         private readonly IConfiguration _configuration;
@@ -23,4 +24,4 @@ namespace Infrastructure.IoC.Modules
                     .SingleInstance();
         }
     }
-}
+

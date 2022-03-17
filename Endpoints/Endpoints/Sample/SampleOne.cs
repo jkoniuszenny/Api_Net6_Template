@@ -1,21 +1,19 @@
 ﻿using Application.CQRS.Sample.Queries.GetAll;
-using Application.Interfaces.Services;
 using FastEndpoints.Configuration;
 using FastEndpoints.Enum;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Endpoints.Endpoints;
+namespace Endpoints.Endpoints.Sample;
 
-public class Health : FastEndpoint
+public class SampleOne : FastEndpoint
 {
-    public Health()
+    public SampleOne()
     {
         Method = HttpRequestMethodTypes.Get;
-        Url = "/query";
-        Name = "OOOO";
-        Tag = "Mediator";
+        Url = "/sampleget";
+        Name = "One";
+        Tag = "Sample";
     }
 
 

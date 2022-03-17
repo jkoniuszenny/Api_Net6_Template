@@ -1,26 +1,26 @@
-﻿
-using Application.Settings;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Shared.Settings;
 
-namespace Infrastructure.Database
+namespace Infrastructure.Database;
+
+public class DatabaseContext : DbContext
 {
-    public class DatabaseContext : DbContext
+    private readonly DatabaseSettings _settings;
+    private readonly DbContextOptions<DatabaseContext> _options;
+
+    public DbContextOptions<DatabaseContext> Options { get { return _options; } }
+
+    public DatabaseContext(DbContextOptions<DatabaseContext> dbContextOptions, DatabaseSettings settings) 
+        : base(dbContextOptions)
     {
-        private readonly DatabaseSettings _settings;
+        _settings = settings;
+        _options = dbContextOptions;
+    }
 
-        public DatabaseContext(
-            DbContextOptions<DatabaseContext> dbContextOptions,
-            DatabaseSettings settings) : base(dbContextOptions)
-        {
-
-            _settings = settings;
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.EnableDetailedErrors(true);
-            optionsBuilder.UseSqlServer(_settings.ConnectionString ?? String.Empty, s => s.CommandTimeout(60));
-            optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-        }
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.EnableDetailedErrors(true);
+        optionsBuilder.UseSqlServer(_settings.ConnectionString ?? string.Empty, s => s.CommandTimeout(60));
+        optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
     }
 }

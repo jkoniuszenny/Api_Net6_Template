@@ -5,8 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Extensions
-{
+namespace Infrastructure.Extensions;
+
     public static class SettingsExtensions
     {
         public static T GetSettings<T>(this IConfiguration configuration) where T : new()
@@ -18,4 +18,4 @@ namespace Infrastructure.Extensions
             return configurationValue;
         }
     }
-}
+

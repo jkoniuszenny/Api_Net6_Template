@@ -1,5 +1,4 @@
-﻿using Application.Interfaces.Services;
-using MediatR;
+﻿using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,16 +15,14 @@ public class GetAllSampleQuery : IRequest<string>
 
 public class GetAllSampleQueryHandler : IRequestHandler<GetAllSampleQuery, string>
 {
-    private readonly ITestService _testService;
 
-    public GetAllSampleQueryHandler(ITestService testService)
+    public GetAllSampleQueryHandler()
     {
-        _testService = testService;
     }
 
     public async Task<string> Handle(GetAllSampleQuery request, CancellationToken cancellationToken)
     {
-        return $"{await _testService.GetStringAsync()} - passed id: {request.Id}";
+        return await Task.FromResult($"passed id: {request.Id}");
     }
 }
 

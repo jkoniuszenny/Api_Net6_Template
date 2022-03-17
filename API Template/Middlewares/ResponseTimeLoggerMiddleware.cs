@@ -1,5 +1,5 @@
-﻿using Application.NLog.Interfaces;
-using Application.Settings;
+﻿using Shared.NLog.Interfaces;
+using Shared.Settings;
 using System.Diagnostics;
 
 namespace Api.Middlewares

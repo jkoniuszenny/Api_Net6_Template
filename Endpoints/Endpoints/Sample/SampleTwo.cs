@@ -1,21 +1,20 @@
 ﻿using Application.CQRS.Sample.Commands.Add;
-using Application.Interfaces.Services;
 using FastEndpoints.Configuration;
 using FastEndpoints.Enum;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Endpoints.Endpoints;
+namespace Endpoints.Endpoints.Sample;
 
-public class State : FastEndpoint
+public class SampleTwo : FastEndpoint
 {
-    public State()
+    public SampleTwo()
     {
         Method = HttpRequestMethodTypes.Post;
-        Url = "/command/{id}";
-        Name = "Wooooo";
-        Tag = "Mediator";
+        Url = "/samplePost/{id}";
+        Name = "Two";
+        Tag = "Sample";
     }
 
     public async Task ExecuteAsync([FromServices] IMediator mediator, [FromQuery]int id)

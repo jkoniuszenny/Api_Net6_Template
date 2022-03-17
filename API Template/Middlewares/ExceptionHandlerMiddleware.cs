@@ -1,4 +1,4 @@
-﻿using Application.NLog.Interfaces;
+﻿using Shared.NLog.Interfaces;
 using Shared.GlobalResponse;
 using System.Net;
 using System.Text.Json;
