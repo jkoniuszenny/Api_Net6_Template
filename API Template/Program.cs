@@ -1,20 +1,19 @@
 using Api.Middlewares;
-using Shared.Settings;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using FastEndpoints.Extensions;
+using Infrastructure.Database;
 using Infrastructure.IoC;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http.Json;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using NLog;
 using NLog.Config;
 using NLog.Web;
-using System.Collections.Generic;
-using System.Reflection;
+using Shared.Settings;
 using System.Text;
-using Infrastructure.Database;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,6 +35,11 @@ builder.Host.ConfigureContainer<ContainerBuilder>(builder =>
 });
 
 builder.Host.UseNLog();
+
+builder.Services.AddStackExchangeRedisCache(x =>
+{
+    x.Configuration = configuration["Redis:ConnectionString"];
+});
 
 builder.Services.AddHttpContextAccessor();
 
@@ -59,6 +63,14 @@ builder.Services.AddAuthentication(x =>
     };
 });
 
+builder.Services.Configure<JsonOptions>(options =>
+{
+    options.SerializerOptions.PropertyNameCaseInsensitive = true;
+    options.SerializerOptions.PropertyNamingPolicy = null;
+    options.SerializerOptions.DictionaryKeyPolicy = null;
+    options.SerializerOptions.WriteIndented = true;
+});
+
 builder.Services.AddDbContext<DatabaseContext>();
 
 builder.Services.AddEndpointsApiExplorer();
@@ -67,7 +79,7 @@ builder.Services.AddSwaggerGen(c =>
     var securityScheme = new OpenApiSecurityScheme
     {
         Name = "JWT Authentication",
-        Description = "Enter JWT Bearer token **_only_**",
+        Description = "Please insert JWT token into field",
         In = ParameterLocation.Header,
         Type = SecuritySchemeType.Http,
         Scheme = "bearer", // must be lower case
@@ -79,12 +91,20 @@ builder.Services.AddSwaggerGen(c =>
         }
     };
     c.AddSecurityDefinition(securityScheme.Reference.Id, securityScheme);
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {securityScheme, Array.Empty<string>()}
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+        {
+            new OpenApiSecurityScheme
+            {
+            Reference = new OpenApiReference
+            {
+                Type = ReferenceType.SecurityScheme,
+                Id = "Bearer"
+            }
+            },
+            new string[] { }
+        }
     });
 });
-
 builder.Services.AddMediatR(typeof(Program).Assembly);
 
 var app = builder.Build();
@@ -111,7 +131,7 @@ app.UseAuthentication();
 
 app.UseMinimalEndpoints("EndpointsController");
 
-var configuringFileName = $"nlog{(!environment.IsProduction() ? $".{environment.EnvironmentName.ToLower()}" : string.Empty)}.config";
+var configuringFileName = $"nlog.config";
 var logger = NLogBuilder.ConfigureNLog(configuringFileName).Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
 LogManager.Configuration.Install(new InstallationContext());
 
@@ -129,4 +149,3 @@ finally
 {
     LogManager.Shutdown();
 }
-

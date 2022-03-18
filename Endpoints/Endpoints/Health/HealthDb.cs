@@ -2,7 +2,7 @@
 using FastEndpoints.Configuration;
 using FastEndpoints.Enum;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 
 namespace Endpoints.Endpoints.Health;
 
@@ -17,9 +17,9 @@ public class HealthDb : FastEndpoint
     }
 
 
-    public async Task<JsonResult> ExecuteAsync([FromServices] IMediator mediator)
+    public async Task<IResult> ExecuteAsync(IMediator mediator)
     {
-        return new JsonResult(await mediator.Send(new CheckDatabaseHealthQuery()));
+        return Results.Ok(await mediator.Send(new CheckDatabaseHealthQuery()));
     }
 
 }

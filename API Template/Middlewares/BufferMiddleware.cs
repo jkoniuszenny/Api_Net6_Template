@@ -1,28 +1,27 @@
-﻿namespace Api.Middlewares
+﻿namespace Api.Middlewares;
+
+public class BufferMiddleware
 {
-    public class BufferMiddleware
+    private readonly RequestDelegate _next;
+
+    public BufferMiddleware(RequestDelegate next)
     {
-        private readonly RequestDelegate _next;
+        _next = next;
+    }
 
-        public BufferMiddleware(RequestDelegate next)
-        {
-            _next = next;
-        }
+    public async Task Invoke(HttpContext context)
+    {
+        await HandleBufferEnabled(context);
 
-        public async Task Invoke(HttpContext context)
-        {
-            await HandleBufferEnabled(context);
-
-            await _next(context);
-
-        }
-
-        private async Task HandleBufferEnabled(HttpContext context)
-        {
-            context.Request.EnableBuffering();
-
-            await Task.CompletedTask;
-        }
+        await _next(context);
 
     }
+
+    private async Task HandleBufferEnabled(HttpContext context)
+    {
+        context.Request.EnableBuffering();
+
+        await Task.CompletedTask;
+    }
+
 }

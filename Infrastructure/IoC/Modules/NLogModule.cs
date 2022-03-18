@@ -4,7 +4,7 @@ using Shared.NLog.Interfaces;
 
 namespace Infrastructure.IoC.Modules;
 
-    public class NLogModule : Autofac.Module
+public class NLogModule : Autofac.Module
 {
     protected override void Load(ContainerBuilder builder)
     {

@@ -1,8 +1,6 @@
-﻿using Application.CQRS.Sample.Queries.GetAll;
-using FastEndpoints.Configuration;
+﻿using FastEndpoints.Configuration;
 using FastEndpoints.Enum;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 
 namespace Endpoints.Endpoints.Health;
 
@@ -17,9 +15,11 @@ public class HealthApi : FastEndpoint
     }
 
 
-    public async Task<string> ExecuteAsync()
+    public async Task<IResult> ExecuteAsync()
     {
-        return await Task.FromResult($"I'm alive - Api - {AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(f=>f.GetName().Name == "Api")?.GetName()?.Version }");
+        var communicate = await Task.FromResult($"I'm alive - Api - {AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(f => f.GetName().Name == "Api")?.GetName()?.Version }");
+        
+        return Results.Ok(communicate);
     }
 
 }

@@ -1,4 +1,5 @@
-﻿using Application.Interfaces.Repositories;
+﻿using Application.Interfaces.Providers;
+using Application.Interfaces.Repositories;
 using Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Shared.Settings;
@@ -10,13 +11,16 @@ public class BaseRepository : IAsyncRepository
 {
     protected readonly DatabaseContext _databaseContext;
     protected readonly DatabaseSettings _databaseSettings;
+    private readonly IUserProvider _userProvider;
 
     public BaseRepository(
         DatabaseContext databaseContext,
-        DatabaseSettings databaseSettings)
+        DatabaseSettings databaseSettings,
+        IUserProvider userProvider)
     {
         _databaseContext = databaseContext;
         _databaseSettings = databaseSettings;
+        _userProvider = userProvider;
     }
 
     public async Task DeleteList(IReadOnlyList<object> entities)
@@ -78,7 +82,7 @@ public class BaseRepository : IAsyncRepository
 
     public async Task<IQueryable<T>> SelectForTasks<T>(Expression<Func<T, bool>> filters) where T : class
     {
-        DatabaseContext context = new DatabaseContext(_databaseContext.Options, _databaseSettings);
+        DatabaseContext context = new DatabaseContext(_databaseContext.Options, _databaseSettings, _userProvider);
 
         return await Task.FromResult(context.Set<T>()
                 .Where(filters)

@@ -1,6 +1,6 @@
 ﻿namespace Application.Interfaces.Repositories;
 
-    // Marker
+// Marker
 public interface IRepository
 {
 }

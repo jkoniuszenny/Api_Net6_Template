@@ -2,7 +2,10 @@
 using FastEndpoints.Configuration;
 using FastEndpoints.Enum;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+
+using Shared.GlobalResponse;
+
 
 namespace Endpoints.Endpoints.Sample;
 
@@ -11,18 +14,20 @@ public class SampleOne : FastEndpoint
     public SampleOne()
     {
         Method = HttpRequestMethodTypes.Get;
-        Url = "/sampleget";
+        Url = "/sampleget/{id}";
         Name = "One";
         Tag = "Sample";
     }
 
-
-    public async Task<JsonResult> ExecuteAsync([FromServices] IMediator mediator)
+    
+    public async Task<IResult> ExecuteAsync( IMediator mediator, int id)
     {
-        return new JsonResult(await mediator.Send(new GetAllSampleQuery()
+        var result = await mediator.Send(new GetAllSampleQuery()
         {
-            Id = 44
-        }));
+            Id = id
+        });
+
+        return Results.Ok(result);
     }
 
 }

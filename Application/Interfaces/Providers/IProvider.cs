@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Application.Interfaces.Providers;
 
-namespace Application.Interfaces.Providers;
-
-    //Marker
-    public interface IProvider
-    {
-    }
+//Marker
+public interface IProvider
+{
+}
 

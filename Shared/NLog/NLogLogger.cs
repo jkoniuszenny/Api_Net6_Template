@@ -1,5 +1,5 @@
-﻿using Shared.NLog.Interfaces;
-using NLog;
+﻿using NLog;
+using Shared.NLog.Interfaces;
 
 namespace Shared.NLog;
 

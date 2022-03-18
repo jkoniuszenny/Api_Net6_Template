@@ -3,7 +3,6 @@ using FastEndpoints.Configuration;
 using FastEndpoints.Enum;
 using MediatR;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Endpoints.Endpoints.Sample;
 
@@ -12,16 +11,16 @@ public class SampleTwo : FastEndpoint
     public SampleTwo()
     {
         Method = HttpRequestMethodTypes.Post;
-        Url = "/samplePost/{id}";
+        Url = "/samplePost";
         Name = "Two";
         Tag = "Sample";
     }
 
-    public async Task ExecuteAsync([FromServices] IMediator mediator, [FromQuery]int id)
+    public async Task<IResult> ExecuteAsync(IMediator mediator)
     {
-        await mediator.Send(new AddSampleCommand());
+        var result =  await mediator.Send(new AddSampleCommand());
 
-        await Task.CompletedTask;
+        return Results.Ok(result);
     }
 
 }

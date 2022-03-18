@@ -1,14 +1,8 @@
 ﻿using Application.CQRS;
-using Application.CQRS.Sample.Commands.Add;
 using Autofac;
 using MediatR;
 using MediatR.Pipeline;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.IoC.Modules;
 
