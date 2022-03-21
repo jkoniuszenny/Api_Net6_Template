@@ -5,6 +5,7 @@ using FastEndpoints.Extensions;
 using Infrastructure.IoC;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Json;
+using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using NLog;
@@ -74,43 +75,43 @@ builder.Services.Configure<JsonOptions>(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    var securityScheme = new OpenApiSecurityScheme
+    c.SwaggerDoc("v1", new OpenApiInfo
     {
-        Name = "JWT Authentication",
-        Description = "Please insert JWT token into field",
-        In = ParameterLocation.Header,
+        Title = "Api",
+        Version = "v1"
+    });
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
         Type = SecuritySchemeType.Http,
-        Scheme = "bearer",
         BearerFormat = "JWT",
-        Reference = new OpenApiReference
-        {
-            Id = JwtBearerDefaults.AuthenticationScheme,
-            Type = ReferenceType.SecurityScheme
-        }
-    };
-    c.AddSecurityDefinition(securityScheme.Reference.Id, securityScheme);
+        In = ParameterLocation.Header,
+        Scheme = "bearer",
+        Description = "Please insert JWT token into field"
+    });
+    c.IncludeXmlComments(PlatformServices.Default.Application.ApplicationBasePath + "\\api.xml");
     c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+    {
+        new OpenApiSecurityScheme
         {
-            new OpenApiSecurityScheme
-            {
             Reference = new OpenApiReference
             {
                 Type = ReferenceType.SecurityScheme,
                 Id = "Bearer"
             }
-            },
-            new string[] { }
+        },
+        new string[] { }
         }
     });
 });
 
 var app = builder.Build();
 
-app.UseSwagger(x => x.SerializeAsV2 = true);
+app.UseSwagger();
 app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("v1/swagger.json", "MyAPI V1");
-    });
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Api ");
+
+});
 
 app.UseHttpsRedirection();
 app.ConfigureExceptionHandler();
@@ -126,7 +127,7 @@ app.ConfigureBuffer();
 app.UseAuthorization();
 app.UseAuthentication();
 
-app.UseMinimalEndpoints("EndpointsController");
+app.UseMinimalEndpoints(c => c.ProjectName = "EndpointsController");
 
 var configuringFileName = $"nlog.config";
 var logger = NLogBuilder.ConfigureNLog(configuringFileName).Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
