@@ -3,8 +3,6 @@ using Autofac;
 using Infrastructure.IoC;
 using Application.Interfaces.Repositories;
 
-var z = Environment.SystemDirectory;
-
 var builder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", optional: true)
