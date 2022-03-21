@@ -12,10 +12,10 @@ namespace Infrastructure.Database;
 public class DatabaseContext : DbContext
 {
     private readonly DatabaseSettings _settings;
-    private readonly DbContextOptions<DatabaseContext> _options;
+    private readonly DbContextOptions<DatabaseContext>? _options;
     private readonly IUserProvider _userProvider;
 
-    public DbContextOptions<DatabaseContext> Options { get { return _options; } }
+    public DbContextOptions<DatabaseContext>? Options { get { return _options; } }
 
     public DbSet<Audit> Audits { get; set; }
 

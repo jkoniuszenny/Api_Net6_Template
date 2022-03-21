@@ -2,9 +2,7 @@ using Api.Middlewares;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using FastEndpoints.Extensions;
-using Infrastructure.Database;
 using Infrastructure.IoC;
-using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Json;
 using Microsoft.IdentityModel.Tokens;
@@ -13,7 +11,6 @@ using NLog;
 using NLog.Config;
 using NLog.Web;
 using Shared.Settings;
-using System.Reflection;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);

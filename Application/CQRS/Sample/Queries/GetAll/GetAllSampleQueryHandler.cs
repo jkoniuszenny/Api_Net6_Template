@@ -30,7 +30,7 @@ public class GetAllSampleQueryHandler : IRequestHandler<GetAllSampleQuery, Globa
             return await GlobalResponse<string>.FailAsync(
                 (int)HttpStatusCode.ExpectationFailed,
                 "Błąd walidacji danych",
-                validatorResult.Errors.Select(s=>s.ErrorMessage));
+                validatorResult.Errors.Select(s => s.ErrorMessage));
 
         var options = new DistributedCacheEntryOptions().SetAbsoluteExpiration(DateTime.Now.AddSeconds(30));
 
@@ -44,7 +44,7 @@ public class GetAllSampleQueryHandler : IRequestHandler<GetAllSampleQuery, Globa
             return await GlobalResponse<string>.SuccessAsync(time);
         }
 
-        var tmp = _mapper.Map<GetAllSampleDto>(new Audit() { TableName = "test"});
+        var tmp = _mapper.Map<GetAllSampleDto>(new Audit() { TableName = "test" });
 
         return await GlobalResponse<string>.SuccessAsync(Encoding.UTF8.GetString(cacheExisted));
     }

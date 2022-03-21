@@ -17,7 +17,7 @@ public class HealthApi : FastEndpoint
     public async Task<IResult> ExecuteAsync()
     {
         var communicate = await Task.FromResult($"I'm alive - Api - {AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(f => f.GetName().Name == "Api")?.GetName()?.Version }");
-        
+
         return Results.Ok(communicate);
     }
 

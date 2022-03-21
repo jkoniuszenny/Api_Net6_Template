@@ -1,8 +1,6 @@
 ﻿using Application.CQRS;
 using Autofac;
 using AutoMapper;
-using MediatR;
-using MediatR.Pipeline;
 using System.Reflection;
 
 namespace Infrastructure.IoC.Modules;

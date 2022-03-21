@@ -1,7 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Application.Interfaces.Repositories;
 using Autofac;
 using Infrastructure.IoC;
-using Application.Interfaces.Repositories;
+using Microsoft.Extensions.Configuration;
 
 var builder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)

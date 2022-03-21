@@ -4,8 +4,6 @@ using FastEndpoints.Enum;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 
-using Shared.GlobalResponse;
-
 
 namespace Endpoints.Endpoints.Sample;
 
@@ -19,8 +17,8 @@ public class SampleOne : FastEndpoint
         Tag = "Sample";
     }
 
-    
-    public async Task<IResult> ExecuteAsync( IMediator mediator, int id)
+
+    public async Task<IResult> ExecuteAsync(IMediator mediator, int id)
     {
         var result = await mediator.Send(new GetAllSampleQuery()
         {

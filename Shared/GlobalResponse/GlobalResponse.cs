@@ -64,7 +64,7 @@ public class GlobalResponse<T> : IGlobalResponse<T>
     public static async Task<GlobalResponse<T>> FailAsync(string message) => await Task.FromResult(Fail(message));
 
     public static async Task<GlobalResponse<T>> FailAsync(int code, string message) => await Task.FromResult(Fail(code, message));
-    
+
     public static async Task<GlobalResponse<T>> FailAsync(int code, string message, IEnumerable<string> validations) => await Task.FromResult(Fail(code, message, validations));
 
 
@@ -86,7 +86,7 @@ public class GlobalResponse<T> : IGlobalResponse<T>
             Succeded = true,
             Payload = new Payload<T>() { Data = data }
         };
-        
+
         return result;
     }
 
@@ -102,7 +102,7 @@ public class Error
     public IEnumerable<string>? ValidationErrors { get; set; }
 }
 
-public class Payload<T> 
+public class Payload<T>
 {
     public T? Data { get; set; }
 }

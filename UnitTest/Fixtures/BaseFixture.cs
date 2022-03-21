@@ -1,13 +1,6 @@
-﻿using Application.Interfaces.Repositories;
-using AutoFixture;
+﻿using AutoFixture;
 using AutoFixture.AutoMoq;
-using Moq;
-using Shared.Enums;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.UnitTest.Fixtures;
 

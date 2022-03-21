@@ -23,7 +23,7 @@ public class DbContextModule : Module
         optionBuilder.UseSqlServer(connectionString);
 
         builder.RegisterType<DatabaseContext>()
-           .WithParameter("options",optionBuilder.Options)
+           .WithParameter("options", optionBuilder.Options)
            .InstancePerDependency();
 
         builder.RegisterType<HttpContextAccessor>()

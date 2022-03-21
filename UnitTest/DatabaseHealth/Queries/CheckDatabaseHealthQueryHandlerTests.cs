@@ -1,16 +1,10 @@
 ﻿using Application.CQRS.DatabaseHealth.Queries.Check;
 using Application.CQRS.Sample.Mapper;
-using Application.Interfaces.Repositories;
 using Application.UnitTest.DatabaseHealth.Fixtures;
-using Application.UnitTest.Fixtures;
 using AutoFixture;
 using AutoMapper;
 using Shared.Enums;
 using Shouldly;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;

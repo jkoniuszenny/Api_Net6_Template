@@ -18,7 +18,7 @@ public class SampleTwo : FastEndpoint
 
     public async Task<IResult> ExecuteAsync(IMediator mediator)
     {
-        var result =  await mediator.Send(new AddSampleCommand());
+        var result = await mediator.Send(new AddSampleCommand());
 
         return Results.Ok(result);
     }
