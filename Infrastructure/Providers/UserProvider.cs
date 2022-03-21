@@ -5,11 +5,11 @@ using System.IdentityModel.Tokens.Jwt;
 
 namespace Infrastructure.Providers;
 
-public class UserPorider : IUserProvider
+public class UserProvider : IUserProvider
 {
     private readonly IHttpContextAccessor _httpContext;
 
-    public UserPorider(IHttpContextAccessor httpContext)
+    public UserProvider(IHttpContextAccessor httpContext)
     {
         _httpContext = httpContext;
     }

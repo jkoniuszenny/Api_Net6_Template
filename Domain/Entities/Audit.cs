@@ -4,8 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Entities;
 
-[Table("Audit", Schema = "Log")]
-public class Audit : CreateBaseEntity
+public class Audit : BaseEntity
 {
     [MaxLength(128)]
     public string TableName { get; set; }

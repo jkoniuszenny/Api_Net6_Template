@@ -4,6 +4,7 @@ using Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Shared.Settings;
+using System.Reflection;
 using System.Text.Json;
 
 namespace Infrastructure.Database;
@@ -17,6 +18,15 @@ public class DatabaseContext : DbContext
     public DbContextOptions<DatabaseContext> Options { get { return _options; } }
 
     public DbSet<Audit> Audits { get; set; }
+
+    public DatabaseContext(
+       DatabaseSettings settings,
+       IUserProvider userProvider)
+    {
+        _settings = settings;
+        _userProvider = userProvider;
+    }
+
 
     public DatabaseContext(
         DbContextOptions<DatabaseContext> dbContextOptions,
@@ -34,6 +44,11 @@ public class DatabaseContext : DbContext
         optionsBuilder.EnableDetailedErrors(true);
         optionsBuilder.UseSqlServer(_settings.ConnectionString ?? string.Empty, s => s.CommandTimeout(60));
         optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
 
     public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)

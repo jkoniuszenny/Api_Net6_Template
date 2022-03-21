@@ -13,6 +13,7 @@ using NLog;
 using NLog.Config;
 using NLog.Web;
 using Shared.Settings;
+using System.Reflection;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -41,7 +42,7 @@ builder.Services.AddStackExchangeRedisCache(x =>
     x.Configuration = configuration["Redis:ConnectionString"];
 });
 
-builder.Services.AddHttpContextAccessor();
+//builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddAuthorization();
 builder.Services.AddAuthentication(x =>
@@ -71,7 +72,7 @@ builder.Services.Configure<JsonOptions>(options =>
     options.SerializerOptions.WriteIndented = true;
 });
 
-builder.Services.AddDbContext<DatabaseContext>();
+//builder.Services.AddDbContext<DatabaseContext>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -82,7 +83,7 @@ builder.Services.AddSwaggerGen(c =>
         Description = "Please insert JWT token into field",
         In = ParameterLocation.Header,
         Type = SecuritySchemeType.Http,
-        Scheme = "bearer", // must be lower case
+        Scheme = "bearer",
         BearerFormat = "JWT",
         Reference = new OpenApiReference
         {
@@ -105,7 +106,6 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
-builder.Services.AddMediatR(typeof(Program).Assembly);
 
 var app = builder.Build();
 

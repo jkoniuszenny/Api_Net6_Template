@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces.Repositories;
 using Infrastructure.Database;
+using Shared.Enums;
 
 namespace Infrastructure.Repositories
 {
@@ -17,8 +18,8 @@ namespace Infrastructure.Repositories
         {
             return
                 await _databaseContext.Database.CanConnectAsync()
-                ? "Healthy"
-                : "Unhealthy";
+                ? nameof(DatabaseHealthy.Healthy)
+                : nameof(DatabaseHealthy.Unhealthy);
         }
     }
 }
