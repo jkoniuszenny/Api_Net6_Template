@@ -1,5 +1,4 @@
-﻿using Application.CQRS.DatabaseHealth.Queries.Check;
-using Application.CQRS.Sample.Mapper;
+﻿using Application.CQRS.DatabaseHealth.Queries.CheckDatabaseHealth;
 using Application.UnitTest.DatabaseHealth.Fixtures;
 using AutoFixture;
 using AutoMapper;
@@ -13,18 +12,10 @@ namespace Application.UnitTest.DatabaseHealth.Queries;
 
 public class CheckDatabaseHealthQueryHandlerTests
 {
-    private readonly IMapper _mapper;
     private readonly DatabaseHealthFixtures _fixture = new();
 
     public CheckDatabaseHealthQueryHandlerTests()
     {
-        var configurationProvider = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<SampleMappingProfile>();
-            }
-        );
-
-        _mapper = configurationProvider.CreateMapper();
     }
 
     [Fact]

@@ -12,6 +12,7 @@ using NLog;
 using NLog.Config;
 using NLog.Web;
 using Shared.Settings;
+using System.Net;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -40,7 +41,8 @@ builder.Services.AddStackExchangeRedisCache(x =>
     x.Configuration = configuration["Redis:ConnectionString"];
 });
 
-//builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddCors();
 
 builder.Services.AddAuthorization();
 builder.Services.AddAuthentication(x =>
@@ -70,8 +72,6 @@ builder.Services.Configure<JsonOptions>(options =>
     options.SerializerOptions.WriteIndented = true;
 });
 
-//builder.Services.AddDbContext<DatabaseContext>();
-
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -88,7 +88,7 @@ builder.Services.AddSwaggerGen(c =>
         Scheme = "bearer",
         Description = "Please insert JWT token into field"
     });
-    c.IncludeXmlComments(PlatformServices.Default.Application.ApplicationBasePath + "\\api.xml");
+    c.IncludeXmlComments(PlatformServices.Default.Application.ApplicationBasePath + "api.xml");
     c.AddSecurityRequirement(new OpenApiSecurityRequirement {
     {
         new OpenApiSecurityScheme
@@ -104,7 +104,13 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+
+builder.Logging.ClearProviders();
+builder.Logging.AddNLogWeb();
+builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+
 var app = builder.Build();
+
 
 app.UseSwagger();
 app.UseSwaggerUI(c =>
@@ -122,6 +128,8 @@ if (responsetimesettings?.Enabled ?? false)
     app.ConfigureResponseTime();
 }
 
+app.UseHsts();
+
 app.ConfigureBuffer();
 
 app.UseAuthorization();
@@ -129,9 +137,7 @@ app.UseAuthentication();
 
 app.UseMinimalEndpoints(c => c.ProjectName = "EndpointsController");
 
-var configuringFileName = $"nlog.config";
-var logger = NLogBuilder.ConfigureNLog(configuringFileName).Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
-LogManager.Configuration.Install(new InstallationContext());
+var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
 
 try
 {

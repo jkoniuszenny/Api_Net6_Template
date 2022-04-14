@@ -1,4 +1,5 @@
-﻿using Shared.GlobalResponse;
+﻿using Application.Exceptions;
+using Shared.GlobalResponse;
 using Shared.NLog.Interfaces;
 using System.Net;
 using System.Text.Json;
@@ -32,6 +33,7 @@ public class ExceptionHandlerMiddleware
     {
         var statusCode = HttpStatusCode.BadRequest;
         var exceptionType = exception.GetType();
+        IReadOnlyList<string>? validations = null;
 
         switch (exception)
         {
@@ -47,12 +49,16 @@ public class ExceptionHandlerMiddleware
             case Exception when exceptionType == typeof(Exception):
                 statusCode = HttpStatusCode.InternalServerError;
                 break;
+            case Exception when exceptionType == typeof(ValidationModelException):
+                statusCode = HttpStatusCode.BadRequest;
+                validations = ((ValidationModelException)exception).Validations;
+                break;
         }
 
         _loggerManager.LogError(exception.Message, exception);
 
 
-        var payload = JsonSerializer.Serialize(GlobalResponse<NullClass>.Fail((int)statusCode, exception.Message));
+        var payload = JsonSerializer.Serialize(await GlobalResponse<NullClass>.FailAsync((int)statusCode, exception.Message, validations));
 
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = (int)statusCode;

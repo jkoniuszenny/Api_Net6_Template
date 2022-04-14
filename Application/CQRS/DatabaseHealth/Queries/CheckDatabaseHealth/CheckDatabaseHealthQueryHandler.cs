@@ -1,7 +1,6 @@
 ﻿using Application.Interfaces.Repositories;
-using MediatR;
 
-namespace Application.CQRS.DatabaseHealth.Queries.Check;
+namespace Application.CQRS.DatabaseHealth.Queries.CheckDatabaseHealth;
 
 public class CheckDatabaseHealthQueryHandler : IRequestHandler<CheckDatabaseHealthQuery, string>
 {

@@ -2,18 +2,23 @@
 using FastEndpoints.Configuration;
 using FastEndpoints.Enum;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
+namespace EndpointsController.Endpoints.Authenticate;
 
-namespace Endpoints.Endpoints.Sample;
-
-public class SampleOne : FastEndpoint
+public class SampleQuery : FastEndpoint
 {
-    public SampleOne()
+    public SampleQuery()
     {
         Method = HttpRequestMethodTypes.Get;
-        Url = "/sampleget/{id}";
-        Name = "One";
+        Url = "/SampleQuery/{id}";
+        Name = "SampleQuery";
         Tag = "Sample";
     }
 

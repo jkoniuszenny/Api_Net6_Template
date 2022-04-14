@@ -1,4 +1,7 @@
-﻿namespace Api.Middlewares;
+﻿using System.Text;
+using System.Text.RegularExpressions;
+
+namespace Api.Middlewares;
 
 public class BufferMiddleware
 {

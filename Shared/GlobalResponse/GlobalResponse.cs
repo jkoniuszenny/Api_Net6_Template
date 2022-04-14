@@ -90,24 +90,39 @@ public class GlobalResponse<T> : IGlobalResponse<T>
         return result;
     }
 
+    public static GlobalResponse<T> Success(T data, int page, int pageSize, int total)
+    {
+        var result = new GlobalResponse<T>()
+        {
+            Succeded = true,
+            Payload = new Payload<T>() { Data = data, Page = page, PageSize = pageSize, Total = total }
+        };
+
+        return result;
+    }
+
     public static async Task<GlobalResponse<T>> SuccessAsync() => await Task.FromResult(Success());
 
     public static async Task<GlobalResponse<T>> SuccessAsync(T data) => await Task.FromResult(Success(data));
+    public static async Task<GlobalResponse<T>> SuccessAsync(T data, int page, int pageSize, int total) => await Task.FromResult(Success(data, page, pageSize, total));
 }
 
-public class Error
+public class Error : IError
 {
     public int Code { get; set; }
     public string? Message { get; set; }
     public IEnumerable<string>? ValidationErrors { get; set; }
 }
 
-public class Payload<T>
+public class Payload<T> : IPayload<T>
 {
     public T? Data { get; set; }
+    public int? Page { get; set; }
+    public int? PageSize { get; set; }
+    public int? Total { get; set; }
 }
 
-public class NullClass
+public class NullClass : INullClass
 {
 
 }

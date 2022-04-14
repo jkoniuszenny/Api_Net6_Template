@@ -24,7 +24,7 @@ public class DbContextModule : Module
 
         builder.RegisterType<DatabaseContext>()
            .WithParameter("options", optionBuilder.Options)
-           .InstancePerDependency();
+           .InstancePerLifetimeScope();
 
         builder.RegisterType<HttpContextAccessor>()
            .As<IHttpContextAccessor>()

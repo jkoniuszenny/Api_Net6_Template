@@ -2,6 +2,7 @@
 using Application.Interfaces.Repositories;
 using Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
+using Shared.NLog.Interfaces;
 using Shared.Settings;
 using System.Linq.Expressions;
 
@@ -12,15 +13,18 @@ public class BaseRepository : IAsyncRepository
     protected readonly DatabaseContext _databaseContext;
     protected readonly DatabaseSettings _databaseSettings;
     private readonly IUserProvider _userProvider;
+    private readonly INLogLogger _logger;
 
     public BaseRepository(
         DatabaseContext databaseContext,
         DatabaseSettings databaseSettings,
-        IUserProvider userProvider)
+        IUserProvider userProvider,
+        INLogLogger logger)
     {
         _databaseContext = databaseContext;
         _databaseSettings = databaseSettings;
         _userProvider = userProvider;
+        _logger = logger;
     }
 
     public async Task DeleteList(IReadOnlyList<object> entities)
@@ -46,12 +50,16 @@ public class BaseRepository : IAsyncRepository
         {
             throw new DbUpdateConcurrencyException("Dane nie zostały zapisane. Ktoś w międzyczasie wykonał ich zmianę. Odśwież i spróbuj ponownie", ex);
         }
+        catch (Exception ex)
+        {
+            _logger.LogError($"{nameof(BaseRepository)} | {ex.Message}");
+        }
         finally
         {
-            Parallel.ForEach(entities, p =>
+            foreach (var p in entities)
             {
                 _databaseContext.Entry(p).State = EntityState.Detached;
-            });
+            }
         }
     }
 
@@ -65,6 +73,10 @@ public class BaseRepository : IAsyncRepository
         catch (DbUpdateConcurrencyException ex)
         {
             throw new DbUpdateConcurrencyException("Dane nie zostały zapisane. Ktoś w międzyczasie wykonał ich zmianę. Odśwież i spróbuj ponownie", ex);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"{nameof(BaseRepository)} | {ex.Message}");
         }
         finally
         {
@@ -101,12 +113,16 @@ public class BaseRepository : IAsyncRepository
         {
             throw new DbUpdateConcurrencyException("Dane nie zostały zapisane. Ktoś w międzyczasie wykonał ich zmianę. Odśwież i spróbuj ponownie", ex);
         }
+        catch (Exception ex)
+        {
+            _logger.LogError($"{nameof(BaseRepository)} | {ex.Message}");
+        }
         finally
         {
-            Parallel.ForEach(entities, p =>
+            foreach (var p in entities)
             {
                 _databaseContext.Entry(p).State = EntityState.Detached;
-            });
+            }
         }
     }
 
@@ -121,9 +137,12 @@ public class BaseRepository : IAsyncRepository
         {
             throw new DbUpdateConcurrencyException("Dane nie zostały zapisane. Ktoś w międzyczasie wykonał ich zmianę. Odśwież i spróbuj ponownie", ex);
         }
+        catch (Exception ex)
+        {
+            _logger.LogError($"{nameof(BaseRepository)} | {ex.Message}");
+        }
         finally
         {
-
             _databaseContext.Entry(entity).State = EntityState.Detached;
 
         }

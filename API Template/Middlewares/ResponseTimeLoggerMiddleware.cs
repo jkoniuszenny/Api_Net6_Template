@@ -31,7 +31,7 @@ public class ResponseTimeLoggerMiddleware
             return Task.CompletedTask;
         });
 
-        return this._next(context);
+        return _next(context);
     }
 }
 

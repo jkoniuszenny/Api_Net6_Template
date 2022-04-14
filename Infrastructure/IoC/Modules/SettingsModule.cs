@@ -22,7 +22,9 @@ public class SettingsModule : Autofac.Module
         builder.RegisterInstance(_configuration.GetSettings<RedisSettings>())
                 .SingleInstance();
         builder.RegisterInstance(_configuration.GetSettings<ResponseTimeSettings>())
-                    .SingleInstance();
+                .SingleInstance();
+        builder.RegisterInstance(_configuration.GetSettings<TokenSettings>())
+                .SingleInstance();
     }
 }
 

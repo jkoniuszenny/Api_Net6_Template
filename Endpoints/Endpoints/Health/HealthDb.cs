@@ -1,4 +1,4 @@
-﻿using Application.CQRS.DatabaseHealth.Queries.Check;
+﻿using Application.CQRS.DatabaseHealth.Queries.CheckDatabaseHealth;
 using FastEndpoints.Configuration;
 using FastEndpoints.Enum;
 using MediatR;
