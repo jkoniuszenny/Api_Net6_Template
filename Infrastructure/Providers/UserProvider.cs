@@ -21,6 +21,20 @@ public class UserProvider : IUserProvider
             return GetJwtSecurityToken().GetClaims("username", "Missing username");
         }
     }
+    public string DepartmentId
+    {
+        get
+        {
+            return GetJwtSecurityToken().GetClaims("departmentId", "0");
+        }
+    }
+    public int EmployeeNr
+    {
+        get
+        {
+            return Int32.Parse(GetJwtSecurityToken().GetClaims("employeeNr", "0"));
+        }
+    }
 
     private JwtSecurityToken GetJwtSecurityToken()
     {

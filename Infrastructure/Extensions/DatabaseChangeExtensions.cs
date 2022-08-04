@@ -6,7 +6,7 @@ public static class DatabaseChangeExtensions
     {
         if (dictionary == null || !dictionary.Any())
         {
-            return null;
+            return null!;
         }
         return dictionary;
     }

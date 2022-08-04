@@ -19,19 +19,23 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Autofac" Version="6.3.0" />
-		<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.2.0" />
-		<PackageReference Include="Fast_Endpoints_jejkop" Version="1.1.1" />
-		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.3" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.3">
+	  <None Include="..\.editorconfig" Link=".editorconfig" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Autofac" Version="6.4.0" />
+		<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
+		<PackageReference Include="Fast_Endpoints_jejkop" Version="1.1.2" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.7" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.7">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="6.0.3" />
-		<PackageReference Include="Microsoft.Extensions.PlatformAbstractions" Version="1.1.0" />
-		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.14.0" />
-		<PackageReference Include="NLog.Web.AspNetCore" Version="4.14.0" />
-		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
+		<PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="6.0.7" />
+		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.16.1" />
+		<PackageReference Include="NLog.Mongo" Version="4.6.0.191" />
+		<PackageReference Include="NLog.Web.AspNetCore" Version="5.0.0" />
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
 	</ItemGroup>
 
 	<ItemGroup>

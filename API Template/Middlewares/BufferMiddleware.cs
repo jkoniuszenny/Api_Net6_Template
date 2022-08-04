@@ -16,7 +16,7 @@ public class BufferMiddleware
     {
         await HandleBufferEnabled(context);
 
-        await _next(context);
+        await _next(context).ConfigureAwait(false);
 
     }
 
@@ -24,7 +24,36 @@ public class BufferMiddleware
     {
         context.Request.EnableBuffering();
 
-        await Task.CompletedTask;
+        var requestBody = await GetString(context.Request.Body).ConfigureAwait(false);
+
+        if (requestBody.Length > 0)
+        {
+            context.Items["bodyKey"] = requestBody;
+        }
+
+    }
+
+    private async Task<string> GetString(Stream stream)
+    {
+        var originalPosition = stream.Position;
+
+        stream.Position = 0;
+
+        string responseText = null!;
+
+        using (var streamReader = new StreamReader(
+                          stream,
+                          Encoding.UTF8,
+                          true,
+                          1024,
+                          leaveOpen: true))
+        {
+            responseText = await streamReader.ReadToEndAsync().ConfigureAwait(false);
+        }
+
+        stream.Position = originalPosition;
+
+        return String.Concat(responseText.Where(c => !Char.IsWhiteSpace(c)));
     }
 
 }

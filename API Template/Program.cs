@@ -5,7 +5,6 @@ using FastEndpoints.Extensions;
 using Infrastructure.IoC;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Json;
-using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using NLog;
@@ -15,81 +14,91 @@ using Shared.Settings;
 using System.Net;
 using System.Text;
 
-var builder = WebApplication.CreateBuilder(args);
+var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
 
-builder.Services.AddAuthorization();
-
-IWebHostEnvironment environment = builder.Environment;
-ConfigurationManager configuration = builder.Configuration;
-
-configuration.SetBasePath(environment.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{environment.EnvironmentName}.json", optional: true)
-                .AddEnvironmentVariables();
-
-builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
-
-builder.Host.ConfigureContainer<ContainerBuilder>(builder =>
+try
 {
-    builder.RegisterModule(new ContainerModule(configuration));
-});
 
-builder.Host.UseNLog();
+    var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddStackExchangeRedisCache(x =>
-{
-    x.Configuration = configuration["Redis:ConnectionString"];
-});
+    builder.Services.AddAuthorization();
+
+    IWebHostEnvironment environment = builder.Environment;
+    ConfigurationManager configuration = builder.Configuration;
+
+    configuration.SetBasePath(environment.ContentRootPath)
+                    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                    .AddJsonFile($"appsettings.{environment.EnvironmentName}.json", optional: true)
+                    .AddEnvironmentVariables();
+
+    builder.Logging.ClearProviders();
+    builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+    builder.Host.UseNLog();
+
+    builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 
 
-builder.Services.AddCors();
-
-builder.Services.AddAuthorization();
-builder.Services.AddAuthentication(x =>
-{
-    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new TokenValidationParameters
+    builder.Host.ConfigureContainer<ContainerBuilder>(builder =>
     {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-        ValidIssuer = configuration["Token:IssuerKey"],
-        ValidAudience = configuration["Token:AudienceKey"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Token:SecretKey"]))
-    };
-});
-
-builder.Services.Configure<JsonOptions>(options =>
-{
-    options.SerializerOptions.PropertyNameCaseInsensitive = true;
-    options.SerializerOptions.PropertyNamingPolicy = null;
-    options.SerializerOptions.DictionaryKeyPolicy = null;
-    options.SerializerOptions.WriteIndented = true;
-});
-
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
-{
-    c.SwaggerDoc("v1", new OpenApiInfo
-    {
-        Title = "Api",
-        Version = "v1"
+        builder.RegisterModule(new ContainerModule(configuration));
     });
-    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+
+    builder.Host.UseNLog();
+
+    builder.Services.AddStackExchangeRedisCache(x =>
     {
-        Type = SecuritySchemeType.Http,
-        BearerFormat = "JWT",
-        In = ParameterLocation.Header,
-        Scheme = "bearer",
-        Description = "Please insert JWT token into field"
+        x.Configuration = configuration["Redis:ConnectionString"];
     });
-    c.IncludeXmlComments(PlatformServices.Default.Application.ApplicationBasePath + "api.xml");
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+
+
+    builder.Services.AddCors();
+
+    builder.Services.AddAuthorization();
+    builder.Services.AddAuthentication(x =>
+    {
+        x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = configuration["Token:IssuerKey"],
+            ValidAudience = configuration["Token:AudienceKey"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Token:SecretKey"]))
+        };
+    });
+
+    builder.Services.Configure<JsonOptions>(options =>
+    {
+        options.SerializerOptions.PropertyNameCaseInsensitive = true;
+        options.SerializerOptions.PropertyNamingPolicy = null;
+        options.SerializerOptions.DictionaryKeyPolicy = null;
+        options.SerializerOptions.WriteIndented = true;
+    });
+
+    builder.Services.AddEndpointsApiExplorer();
+    builder.Services.AddSwaggerGen(c =>
+    {
+        c.SwaggerDoc("v1", new OpenApiInfo
+        {
+            Title = "Api",
+            Version = "v1"
+        });
+        c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+        {
+            Type = SecuritySchemeType.Http,
+            BearerFormat = "JWT",
+            In = ParameterLocation.Header,
+            Scheme = "bearer",
+            Description = "Please insert JWT token into field"
+        });
+        c.IncludeXmlComments(AppContext.BaseDirectory + "api.xml");
+        c.AddSecurityRequirement(new OpenApiSecurityRequirement {
     {
         new OpenApiSecurityScheme
         {
@@ -99,48 +108,50 @@ builder.Services.AddSwaggerGen(c =>
                 Id = "Bearer"
             }
         },
-        new string[] { }
+        Array.Empty<string>()
         }
+        });
     });
-});
+
+    var app = builder.Build();
+
+    app.UseCors(c =>
+    {
+        c.AllowAnyHeader();
+        c.AllowAnyMethod();
+        c.AllowAnyOrigin();
+    });
+
+    app.ConfigureBuffer();
+
+    app.UsePathBase("/-api");
+
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Api ");
+
+    });
+
+    app.UseRouting();
+
+    app.ConfigureExceptionHandler();
+
+    var responsetimesettings = app.Services.GetService<ResponseTimeSettings>();
+    if (responsetimesettings?.Enabled ?? false)
+    {
+        app.ConfigureResponseTime();
+    }
+
+    app.UseHsts();
 
 
-builder.Logging.ClearProviders();
-builder.Logging.AddNLogWeb();
-builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+    app.UseAuthorization();
+    app.UseAuthentication();
 
-var app = builder.Build();
+    app.UseMinimalEndpoints(c => c.ProjectName = "EndpointsController");
 
 
-app.UseSwagger();
-app.UseSwaggerUI(c =>
-{
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Api ");
-
-});
-
-app.UseHttpsRedirection();
-app.ConfigureExceptionHandler();
-
-var responsetimesettings = app.Services.GetService<ResponseTimeSettings>();
-if (responsetimesettings?.Enabled ?? false)
-{
-    app.ConfigureResponseTime();
-}
-
-app.UseHsts();
-
-app.ConfigureBuffer();
-
-app.UseAuthorization();
-app.UseAuthentication();
-
-app.UseMinimalEndpoints(c => c.ProjectName = "EndpointsController");
-
-var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
-
-try
-{
     logger.Debug("Starting program");
     app.Run();
 }

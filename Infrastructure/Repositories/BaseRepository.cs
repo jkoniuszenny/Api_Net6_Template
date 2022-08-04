@@ -11,13 +11,13 @@ namespace Infrastructure.Repositories;
 public class BaseRepository : IAsyncRepository
 {
     protected readonly DatabaseContext _databaseContext;
-    protected readonly DatabaseSettings _databaseSettings;
+    protected readonly DatabaseSqlSettings _databaseSettings;
     private readonly IUserProvider _userProvider;
     private readonly INLogLogger _logger;
 
     public BaseRepository(
         DatabaseContext databaseContext,
-        DatabaseSettings databaseSettings,
+        DatabaseSqlSettings databaseSettings,
         IUserProvider userProvider,
         INLogLogger logger)
     {
@@ -94,7 +94,7 @@ public class BaseRepository : IAsyncRepository
 
     public async Task<IQueryable<T>> SelectForTasks<T>(Expression<Func<T, bool>> filters) where T : class
     {
-        DatabaseContext context = new DatabaseContext(_databaseContext.Options, _databaseSettings, _userProvider);
+        DatabaseContext context = new(_databaseContext.Options!, _databaseSettings, _userProvider);
 
         return await Task.FromResult(context.Set<T>()
                 .Where(filters)

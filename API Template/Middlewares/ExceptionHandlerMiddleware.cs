@@ -58,7 +58,7 @@ public class ExceptionHandlerMiddleware
         _loggerManager.LogError(exception.Message, exception);
 
 
-        var payload = JsonSerializer.Serialize(await GlobalResponse<NullClass>.FailAsync((int)statusCode, exception.Message, validations));
+        var payload = JsonSerializer.Serialize(await GlobalResponse<NullClass>.FailAsync((int)statusCode, exception.Message, validations!));
 
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = (int)statusCode;

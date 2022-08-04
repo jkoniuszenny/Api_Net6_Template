@@ -17,7 +17,9 @@ public class SettingsModule : Autofac.Module
 
     protected override void Load(ContainerBuilder builder)
     {
-        builder.RegisterInstance(_configuration.GetSettings<DatabaseSettings>())
+        builder.RegisterInstance(_configuration.GetSettings<DatabaseSqlSettings>())
+                .SingleInstance();
+        builder.RegisterInstance(_configuration.GetSettings<DatabaseMongoSettings>())
                 .SingleInstance();
         builder.RegisterInstance(_configuration.GetSettings<RedisSettings>())
                 .SingleInstance();

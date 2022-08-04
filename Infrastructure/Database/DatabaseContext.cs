@@ -11,7 +11,7 @@ namespace Infrastructure.Database;
 
 public class DatabaseContext : DbContext
 {
-    private readonly DatabaseSettings _settings;
+    private readonly DatabaseSqlSettings _settings;
     private readonly DbContextOptions<DatabaseContext>? _options;
     private readonly IUserProvider _userProvider;
 
@@ -20,7 +20,7 @@ public class DatabaseContext : DbContext
     public DbSet<Audit> Audits { get; set; }
 
     public DatabaseContext(
-       DatabaseSettings settings,
+       DatabaseSqlSettings settings,
        IUserProvider userProvider)
     {
         _settings = settings;
@@ -30,7 +30,7 @@ public class DatabaseContext : DbContext
 
     public DatabaseContext(
         DbContextOptions<DatabaseContext> dbContextOptions,
-        DatabaseSettings settings,
+        DatabaseSqlSettings settings,
         IUserProvider userProvider)
         : base(dbContextOptions)
     {

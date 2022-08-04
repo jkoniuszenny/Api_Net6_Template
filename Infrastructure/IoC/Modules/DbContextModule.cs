@@ -29,6 +29,9 @@ public class DbContextModule : Module
         builder.RegisterType<HttpContextAccessor>()
            .As<IHttpContextAccessor>()
            .SingleInstance();
+
+        builder.RegisterType<DatabaseMongoContext>()
+           .InstancePerLifetimeScope();
     }
 }
 
