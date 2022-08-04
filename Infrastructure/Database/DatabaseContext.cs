@@ -81,7 +81,7 @@ public class DatabaseContext : DbContext
     private async Task<IEnumerable<Tuple<EntityEntry, Audit>>> AuditNonTemporaryProperties()
     {
         ChangeTracker.DetectChanges();
-        var entitiesToTrack = ChangeTracker.Entries().Where(e => !(e.Entity is Audit) && e.State != EntityState.Detached && e.State != EntityState.Unchanged);
+        var entitiesToTrack = ChangeTracker.Entries().Where(e => e.Entity is not Audit && e.State != EntityState.Detached && e.State != EntityState.Unchanged);
 
         await Audits.AddRangeAsync(
             entitiesToTrack.Where(e => !e.Properties.Any(p => p.IsTemporary)).Select(e => new Audit()

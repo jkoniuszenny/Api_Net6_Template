@@ -33,6 +33,7 @@
 		</PackageReference>
 		<PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="6.0.7" />
 		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.16.1" />
+		<PackageReference Include="NLog.Database" Version="5.0.0" />
 		<PackageReference Include="NLog.Mongo" Version="4.6.0.191" />
 		<PackageReference Include="NLog.Web.AspNetCore" Version="5.0.0" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
