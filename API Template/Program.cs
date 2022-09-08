@@ -1,4 +1,4 @@
-using Api.Middlewares;
+using API_Template.Middlewares;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using FastEndpoints.Extensions;
@@ -8,10 +8,8 @@ using Microsoft.AspNetCore.Http.Json;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using NLog;
-using NLog.Config;
 using NLog.Web;
 using Shared.Settings;
-using System.Net;
 using System.Text;
 
 var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
@@ -123,6 +121,9 @@ try
     });
 
     app.ConfigureBuffer();
+    app.UsernameLog();
+    app.RequestLog();
+    app.ConfigureExceptionHandler();
 
     app.UsePathBase("/-api");
 
@@ -134,8 +135,6 @@ try
     });
 
     app.UseRouting();
-
-    app.ConfigureExceptionHandler();
 
     var responsetimesettings = app.Services.GetService<ResponseTimeSettings>();
     if (responsetimesettings?.Enabled ?? false)

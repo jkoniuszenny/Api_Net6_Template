@@ -1,9 +1,4 @@
-﻿using AutoMapper;
-using Domain.Entities;
-using MediatR;
-using Microsoft.Extensions.Caching.Distributed;
-using Shared.GlobalResponse;
-using System.Net;
+﻿using Domain.Entities;
 using System.Text;
 
 namespace Application.CQRS.Sample.Queries.GetAll;

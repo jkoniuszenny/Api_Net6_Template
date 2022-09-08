@@ -1,6 +1,4 @@
-﻿using FluentValidation;
-
-namespace Application.CQRS.Sample.Queries.GetAll;
+﻿namespace Application.CQRS.Sample.Queries.GetAll;
 
 public class GetAllSampleValidator : AbstractValidator<GetAllSampleQuery>
 {

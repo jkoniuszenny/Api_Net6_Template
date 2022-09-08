@@ -1,7 +1,6 @@
 ﻿using System.Text;
-using System.Text.RegularExpressions;
 
-namespace Api.Middlewares;
+namespace API_Template.Middlewares;
 
 public class BufferMiddleware
 {
@@ -53,7 +52,7 @@ public class BufferMiddleware
 
         stream.Position = originalPosition;
 
-        return String.Concat(responseText.Where(c => !Char.IsWhiteSpace(c)));
+        return string.Concat(responseText.Where(c => !char.IsWhiteSpace(c)));
     }
 
 }

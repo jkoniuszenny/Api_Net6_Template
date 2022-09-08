@@ -1,7 +1,4 @@
-﻿using MediatR;
-using Shared.GlobalResponse;
-
-namespace Application.CQRS.Sample.Queries.GetAll;
+﻿namespace Application.CQRS.Sample.Queries.GetAll;
 
 public class GetAllSampleQuery : IRequest<GlobalResponse<string>>
 {

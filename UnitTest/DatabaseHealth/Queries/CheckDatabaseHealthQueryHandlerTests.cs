@@ -1,7 +1,6 @@
 ﻿using Application.CQRS.DatabaseHealth.Queries.CheckDatabaseHealth;
 using Application.UnitTest.DatabaseHealth.Fixtures;
 using AutoFixture;
-using AutoMapper;
 using Shared.Enums;
 using Shouldly;
 using System.Threading;

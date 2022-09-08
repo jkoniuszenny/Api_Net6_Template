@@ -4,7 +4,7 @@ using Shared.NLog.Interfaces;
 using System.Net;
 using System.Text.Json;
 
-namespace Api.Middlewares;
+namespace API_Template.Middlewares;
 public class ExceptionHandlerMiddleware
 {
     private readonly RequestDelegate _next;

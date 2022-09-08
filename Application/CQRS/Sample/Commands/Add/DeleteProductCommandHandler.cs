@@ -1,6 +1,4 @@
-﻿using MediatR;
-using Shared.GlobalResponse;
-using Shared.NLog.Interfaces;
+﻿using Shared.NLog.Interfaces;
 
 namespace Application.CQRS.Sample.Commands.Add
 {

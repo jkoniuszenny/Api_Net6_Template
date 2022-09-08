@@ -1,5 +1,4 @@
 ﻿using Application.CQRS.Sample.Queries.GetAll;
-using AutoMapper;
 using Domain.Entities;
 
 namespace Application.CQRS.Sample.Mapper

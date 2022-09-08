@@ -2,7 +2,7 @@
 using Shared.Settings;
 using System.Diagnostics;
 
-namespace Api.Middlewares;
+namespace API_Template.Middlewares;
 
 public class ResponseTimeLoggerMiddleware
 {
