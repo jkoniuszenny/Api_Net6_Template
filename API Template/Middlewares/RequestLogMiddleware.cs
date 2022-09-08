@@ -17,7 +17,7 @@ namespace API_Template.Middlewares
         public async Task Invoke(HttpContext context)
         {
 
-            if (context.Request.Path.Value == "/")
+            if (context.Request.Path.Value == "/" || context.Request.Path.Value == "/Health/Api")
                 await _next(context);
             else
             {

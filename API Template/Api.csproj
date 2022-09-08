@@ -36,6 +36,8 @@
 		<PackageReference Include="NLog.Database" Version="5.0.0" />
 		<PackageReference Include="NLog.Mongo" Version="4.6.0.191" />
 		<PackageReference Include="NLog.Web.AspNetCore" Version="5.0.0" />
+		<PackageReference Include="prometheus-net" Version="6.0.0" />
+		<PackageReference Include="prometheus-net.AspNetCore" Version="6.0.0" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
 	</ItemGroup>
 

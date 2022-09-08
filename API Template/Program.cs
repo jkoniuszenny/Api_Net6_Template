@@ -11,6 +11,7 @@ using NLog;
 using NLog.Web;
 using Shared.Settings;
 using System.Text;
+using Prometheus;
 
 var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
 
@@ -133,6 +134,9 @@ try
         c.SwaggerEndpoint("/-api/swagger/v1/swagger.json", "Api ");
 
     });
+
+    app.UseMetricServer();
+
 
     app.UseRouting();
 
