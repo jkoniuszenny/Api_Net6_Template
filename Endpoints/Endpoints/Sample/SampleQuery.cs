@@ -4,7 +4,7 @@ using FastEndpoints.Enum;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 
-namespace EndpointsController.Endpoints.Authenticate;
+namespace EndpointsController.Endpoints.Sample;
 
 public class SampleQuery : FastEndpoint
 {

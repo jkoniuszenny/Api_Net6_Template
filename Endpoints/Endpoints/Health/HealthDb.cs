@@ -4,7 +4,7 @@ using FastEndpoints.Enum;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 
-namespace Endpoints.Endpoints.Health;
+namespace EndpointsController.Endpoints.Health;
 
 public class HealthDb : FastEndpoint
 {

@@ -2,7 +2,7 @@
 using FastEndpoints.Enum;
 using Microsoft.AspNetCore.Http;
 
-namespace Endpoints.Endpoints.Health;
+namespace EndpointsController.Endpoints.Health;
 
 public class HealthApi : FastEndpoint
 {
